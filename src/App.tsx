@@ -1,13 +1,9 @@
+import Router from './router/Router';
+
 // ----------------------------------------------------------------
 
 const App = () => {
-  return (
-    <div>
-      <h1 className="text-3xl font-bold underline text-blue-700">
-        Health Records App
-      </h1>
-    </div>
-  );
+  return <Router />;
 };
 
 export default App;
