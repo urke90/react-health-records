@@ -1,5 +1,5 @@
 import AuthLayout from '@/components/layout/AuthLayout';
-import DashboardLayout from '@/components/layout/DashboardLayout';
+import HomeLayout from '@/components/layout/HomeLayout';
 import CreateRecord from '@/pages/CreateRecord';
 import Dashboard from '@/pages/Dashboard';
 import Login from '@/pages/Login';
@@ -28,7 +28,7 @@ const Router: React.FC = () => {
         <Route path="register" element={<Register />} />
       </Route>
 
-      <Route element={<DashboardLayout />}>
+      <Route element={<HomeLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="records/create" element={<CreateRecord />} />
       </Route>
