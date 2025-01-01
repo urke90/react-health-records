@@ -28,7 +28,8 @@
       "@/components/*": ["src/components/*"],
       "@/pages/*": ["src/pages/*"],
       "@/lib/*": ["src/lib/*"],
-      "@/router/*": ["src/router/*"]
+      "@/router/*": ["src/router/*"],
+      "@/assets/*": ["src/assets/*"]
     }
   },
   "include": ["src"]

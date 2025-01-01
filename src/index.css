@@ -22,8 +22,8 @@
     font-family: Roboto, system-ui, Avenir, Helvetica, Arial, sans-serif;
   }
   #root {
-    width: 100%;
-    /* border: 1px solid blue; */
+    width: min(1536px, 100%);
+    margin: 0 auto;
   }
 }
 
