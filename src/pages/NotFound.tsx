@@ -8,7 +8,7 @@ const NotFound: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center">
       <div className="min-w-[320px]  p-3 text-center flex flex-col  items-center">
         <h3 className="text-xl sm:text-3xl">404 Page Not Found</h3>
-        <NotFoundIcon className="-mt-6" />
+        <NotFoundIcon className="-my-6" />
         <div className="flex gap-2 items-center">
           Go back
           <Link className="bg-cyan-500 px-3 py-2 text-white rounded-md" to="/">
