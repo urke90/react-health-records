@@ -1,9 +1,7 @@
 import Logo from '@/assets/images/logo.svg';
-import { Link, NavLink } from 'react-router';
-
+import { NAVIGATION_OPTIONS } from '@/lib/constants';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import CreateRecordIcon from '../icons/CreateRecord';
-import HomeIcon from '../icons/Home';
+import { Link, NavLink } from 'react-router';
 import MenuIcon from '../icons/Menu';
 
 // ----------------------------------------------------------------
@@ -38,20 +36,22 @@ const Header: React.FC = () => {
                 sideOffset={15}
                 onCloseAutoFocus={(e) => e.preventDefault()}
               >
-                <DropdownMenu.Item className="relative flex h-[25px] select-none items-center rounded-[3px] pl-2 pr-[5px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-cyan-500 data-[highlighted]:text-white data-[disabled]:text-gray-500 cursor-pointer">
-                  <NavLink to="/" className="flex gap-2 items-center">
-                    <HomeIcon /> Dashboard
-                  </NavLink>
-                </DropdownMenu.Item>
-                <DropdownMenu.Item className="relative flex h-[25px] select-none items-center rounded-[3px] pl-2 pr-[5px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-cyan-500 data-[highlighted]:text-white data-[disabled]:text-gray-500 cursor-pointer">
-                  <NavLink
-                    to="/records/create"
-                    className="flex gap-2 items-center"
-                  >
-                    <CreateRecordIcon /> New Record
-                  </NavLink>
-                </DropdownMenu.Item>
-
+                {NAVIGATION_OPTIONS.map(({ href, icon, label }) => {
+                  const Icon = icon;
+                  return (
+                    <DropdownMenu.Item
+                      key={href}
+                      className="relative flex h-[25px] select-none items-center rounded-[3px] pl-2 pr-[5px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-cyan-500 data-[highlighted]:text-white data-[disabled]:text-gray-500 cursor-pointer"
+                    >
+                      <NavLink
+                        to={href}
+                        className="flex gap-2 items-center w-full"
+                      >
+                        <Icon /> {label}
+                      </NavLink>
+                    </DropdownMenu.Item>
+                  );
+                })}
                 <DropdownMenu.Separator />
                 <DropdownMenu.Arrow className="fill-gray-200" />
               </DropdownMenu.Content>
