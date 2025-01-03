@@ -29,7 +29,8 @@
       "@/pages/*": ["src/pages/*"],
       "@/lib/*": ["src/lib/*"],
       "@/router/*": ["src/router/*"],
-      "@/assets/*": ["src/assets/*"]
+      "@/assets/*": ["src/assets/*"],
+      "@/db/*": ["src/db/*"]
     }
   },
   "include": ["src"]
