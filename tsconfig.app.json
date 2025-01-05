@@ -30,7 +30,8 @@
       "@/lib/*": ["src/lib/*"],
       "@/router/*": ["src/router/*"],
       "@/assets/*": ["src/assets/*"],
-      "@/db/*": ["src/db/*"]
+      "@/db/*": ["src/db/*"],
+      "@/types/*": ["src/types/*"]
     }
   },
   "include": ["src"]
