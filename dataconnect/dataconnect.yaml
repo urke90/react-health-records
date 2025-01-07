@@ -1,0 +1,12 @@
+specVersion: "v1beta"
+serviceId: "health-records-toma-test"
+location: "us-central1"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "fdcdb"
+      cloudSql:
+        instanceId: "health-records-toma-test-fdc"
+      # schemaValidation: "COMPATIBLE"
+connectorDirs: ["./connector"]
