@@ -9,6 +9,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 
 // ----------------------------------------------------------------
 
@@ -39,6 +40,7 @@ const Register: React.FC = () => {
         userName,
         email,
       });
+      toast.success('You have successfully registered', { autoClose: 3000 });
       navigate('/login');
     } catch (error) {
       console.log('Error message', error);
