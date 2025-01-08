@@ -1,8 +1,8 @@
 import { Outlet } from 'react-router';
 
-type Props = {};
+// ----------------------------------------------------------------
 
-const AuthLayout = (props: Props) => {
+const AuthLayout = () => {
   return (
     <div className="min-h-screen flex-center bg-cyan-50">
       <Outlet />
