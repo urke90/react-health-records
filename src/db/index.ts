@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { connectAuthEmulator, getAuth } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 // ----------------------------------------------------------------
@@ -17,7 +17,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
-connectAuthEmulator(auth, 'http://127.0.0.1:9099');
+// connectAuthEmulator(auth, 'http://127.0.0.1:9099');
 
 // ? Export this variable for now, till i decide if i should work with firebase API or regular HTTP calls
 export const db = getFirestore(app);

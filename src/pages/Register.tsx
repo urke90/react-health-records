@@ -1,29 +1,29 @@
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
-import { auth } from '@/db';
+import { auth, db } from '@/db';
 import { type IRegisterForm, registerFormSchema } from '@/lib/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FirebaseError } from 'firebase/app';
 import { AuthErrorCodes, createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 // ----------------------------------------------------------------
 
 const Register: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
-      firstName: '',
-      lastName: '',
+      userName: '',
       email: '',
       password: '',
     },
@@ -31,11 +31,15 @@ const Register: React.FC = () => {
 
   const onSubmit: SubmitHandler<IRegisterForm> = async (data) => {
     try {
-      // console.log('data', data);
-      const { email, firstName, lastName, password } = data;
+      const { email, userName, password } = data;
 
       const response = await createUserWithEmailAndPassword(auth, email, password);
-      console.log('response', response);
+      await setDoc(doc(db, 'users', response.user.uid), {
+        id: response.user.uid,
+        userName,
+        email,
+      });
+      navigate('/');
     } catch (error) {
       console.log('Error message', error);
       // ? Da li je potrebno proveravati sve errore ili samo ovako neke kao email? Da li onda praviti neku klasu gde cu imati sve error.code i njihove specificne greske ali formatirane u  userfriendly formatu??? (ovo je vise primer, da li moram da proveravam pojedinacno ili mogu da setujem u error ceo error.message i samo da renderujem?)
@@ -46,29 +50,22 @@ const Register: React.FC = () => {
           setError(error.message);
         }
       }
-      // console.log('Error creating user:', error);
     }
   };
 
   return (
     <div className="flex flex-col gap-3 shadow-xl bg-white w-[min(400px,100%)] p-2 sm:p-5">
-      <h2 className="h2-bold text-center">Sign Up</h2>
+      <h2 className="h2-bold text-center">Create Account</h2>
       {error && <p className="p1-medium text-red-500 text-center">{error}</p>}
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
         <Input
-          {...register('firstName')}
+          {...register('userName')}
           type="text"
-          placeholder="First Name"
-          label="First Name"
-          errorMessage={errors.firstName?.message}
+          placeholder="Username"
+          label="Username"
+          errorMessage={errors.userName?.message}
         />
-        <Input
-          {...register('lastName')}
-          type="text"
-          placeholder="Last Name"
-          label="Last Name"
-          errorMessage={errors.lastName?.message}
-        />
+
         <Input
           {...register('email')}
           type="email"
