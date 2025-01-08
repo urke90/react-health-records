@@ -65,7 +65,6 @@ const Register: React.FC = () => {
           label="Username"
           errorMessage={errors.userName?.message}
         />
-
         <Input
           {...register('email')}
           type="email"
