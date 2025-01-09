@@ -1,7 +1,10 @@
 import Logo from '@/assets/images/logo.svg';
+import { auth } from '@/db';
 import { NAVIGATION_OPTIONS } from '@/lib/constants';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { signOut } from 'firebase/auth';
 import { Link, NavLink } from 'react-router';
+import LogoutIcon from '../icons/Logout';
 import MenuIcon from '../icons/Menu';
 
 // ----------------------------------------------------------------
@@ -31,7 +34,7 @@ const Header: React.FC = () => {
 
             <DropdownMenu.Portal>
               <DropdownMenu.Content
-                className="min-w-[220px] rounded-md bg-gray-200 p-[5px] shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade"
+                className="min-w-[220px] rounded-md bg-gray-100 p-[5px] shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade flex flex-col gap-1"
                 align="end"
                 sideOffset={15}
                 onCloseAutoFocus={(e) => e.preventDefault()}
@@ -41,17 +44,20 @@ const Header: React.FC = () => {
                   return (
                     <DropdownMenu.Item
                       key={href}
-                      className="relative flex h-[25px] select-none items-center rounded-[3px] pl-2 pr-[5px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-cyan-500 data-[highlighted]:text-white data-[disabled]:text-gray-500 cursor-pointer"
+                      className="relative flex h-[25px] select-none items-center rounded-[3px] pl-2 pr-[5px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-cyan-500 data-[highlighted]:text-white data-[disabled]:text-gray-500 cursor-pointer hover:translate-x-2 transition"
                     >
-                      <NavLink
-                        to={href}
-                        className="flex gap-2 items-center w-full"
-                      >
+                      <NavLink to={href} className="flex gap-2 items-center w-full">
                         <Icon /> {label}
                       </NavLink>
                     </DropdownMenu.Item>
                   );
                 })}
+                <DropdownMenu.Item
+                  className="relative flex h-[25px] select-none items-center rounded-[3px] pl-2 pr-[5px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-cyan-500 data-[highlighted]:text-white data-[disabled]:text-gray-500 cursor-pointer gap-2 hover:translate-x-2 transition"
+                  onClick={() => signOut(auth)}
+                >
+                  <LogoutIcon /> Log out
+                </DropdownMenu.Item>
                 <DropdownMenu.Separator />
                 <DropdownMenu.Arrow className="fill-gray-200" />
               </DropdownMenu.Content>

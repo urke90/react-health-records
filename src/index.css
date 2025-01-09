@@ -22,7 +22,7 @@
     font-family: Roboto, system-ui, Avenir, Helvetica, Arial, sans-serif;
   }
   #root {
-    width: min(1536px, 100%);
+    width: 100%;
     margin: 0 auto;
   }
 }
@@ -45,11 +45,11 @@
   .h1-bold {
     @apply font-bold text-[32px] leading-[40px];
   }
-  .h2-bold {
-    @apply font-bold text-2xl;
-  }
   .h1-medium {
     @apply font-medium text-xl;
+  }
+  .h2-bold {
+    @apply font-bold text-2xl;
   }
   .h2-medium {
     @apply font-medium text-base;

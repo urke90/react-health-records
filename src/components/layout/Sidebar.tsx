@@ -1,6 +1,10 @@
+import { auth } from '@/db';
 import { NAVIGATION_OPTIONS } from '@/lib/constants';
+import { signOut } from 'firebase/auth';
 import { NavLink } from 'react-router';
 import DashboardIcon from '../icons/Dashboard';
+import LogoutIcon from '../icons/Logout';
+import Button from '../ui/Button';
 
 // ----------------------------------------------------------------
 
@@ -23,6 +27,14 @@ const Sidebar: React.FC = () => {
           );
         })}
       </ul>
+      <div className="mt-2">
+        <Button
+          onClick={() => signOut(auth)}
+          className="flex items-center gap-2 bg-transparent p-0 border-none hover:translate-x-2 transition"
+        >
+          <LogoutIcon /> Log out
+        </Button>
+      </div>
     </div>
   );
 };
