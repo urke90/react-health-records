@@ -7,10 +7,10 @@ type Props = {};
 
 const ProfileEdit = (props: Props) => {
   return (
-    <section className="p-2 sm:p-4 w-full flex flex-col flex-1  m-auto max-sm:w-[min(460px,100%)]">
+    <section className="flex flex-col gap-2 sm:gap-4 flex-1 m-auto max-sm:w-[min(460px,100%)]">
       <h2 className="h2-bold">Uros Bijelic Health Card</h2>
-      <form className="w-full ">
-        <div className="flex flex-col">
+      <form className="md:flex gap-6 lg:gap-10">
+        <div className="w-[min(400px,100%)]">
           <p className="p1-bold underline mb-2">Personal Info</p>
           <div className="flex flex-col gap-2">
             <Input label="First Name" placeholder="First name" />
@@ -20,6 +20,8 @@ const ProfileEdit = (props: Props) => {
             <Textarea placeholder="Allergies" label="Allergies" />
             <Textarea placeholder="Special Notes" label="Special Notes" />
           </div>
+        </div>
+        <div className="w-[min(400px,100%)]">
           <p className="p1-bold underline mb-2">Address</p>
           <div className="flex flex-col gap-2">
             <Input label="State" placeholder="State" />
