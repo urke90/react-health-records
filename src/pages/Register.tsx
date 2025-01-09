@@ -41,7 +41,7 @@ const Register: React.FC = () => {
         email,
       });
       toast.success('You have successfully registered', { autoClose: 3000 });
-      navigate('/login');
+      navigate('/');
     } catch (error) {
       console.log('Error message', error);
       // ? Da li je potrebno proveravati sve errore ili samo ovako neke kao email? Da li onda praviti neku klasu gde cu imati sve error.code i njihove specificne greske ali formatirane u  userfriendly formatu??? (ovo je vise primer, da li moram da proveravam pojedinacno ili mogu da setujem u error ceo error.message i samo da renderujem?)

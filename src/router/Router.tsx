@@ -7,29 +7,32 @@ import Login from '@/pages/Login';
 import NotFound from '@/pages/NotFound';
 import Register from '@/pages/Register';
 import { onAuthStateChanged } from 'firebase/auth';
-import { Route, Routes, useNavigate } from 'react-router';
+import { useEffect, useState } from 'react';
+import { Navigate, Route, Routes } from 'react-router';
 
 // ----------------------------------------------------------------
 
 const Router: React.FC = () => {
-  // const isAuth = true;
-  const navigate = useNavigate();
+  const [isAuth, setIsAuth] = useState(false);
 
-  // ! figure out a way to redirect users to /login but allow /register route as well for unauthenticated users
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      navigate('/login');
-    }
-  });
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsAuth(true);
+      } else {
+        setIsAuth(false);
+      }
+    });
+  }, []);
 
   return (
     <Routes>
-      <Route element={<AuthLayout />}>
+      <Route element={!isAuth ? <AuthLayout /> : <Navigate to="/" replace />}>
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
       </Route>
 
-      <Route element={<HomeLayout />}>
+      <Route element={isAuth ? <HomeLayout /> : <Navigate to="/login" replace />}>
         <Route index element={<Dashboard />} />
         <Route path="records/create" element={<CreateRecord />} />
       </Route>
