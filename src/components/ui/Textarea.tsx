@@ -18,7 +18,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, ITextareaProps>(
         <textarea
           ref={ref}
           className={twMerge(
-            'border-2 border-gray-300 rounded-md py-0.5 pl-2 focus:border-cyan-400 outline-none placeholder:text-sm text-gray-800 transition',
+            'min-h-[90px] border-2 border-gray-300 rounded-md py-0.5 pl-2 focus:border-cyan-400 outline-none placeholder:text-sm text-gray-800 transition',
             className
           )}
           {...rest}

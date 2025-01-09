@@ -15,7 +15,7 @@ const HomeLayout = (props: Props) => {
         <div className="max-sm:hidden">
           <Sidebar />
         </div>
-        <main className="h-[200vh]">
+        <main className="flex-1">
           <Outlet />
         </main>
       </div>

@@ -26,8 +26,6 @@ const Router: React.FC = () => {
     });
   }, []);
 
-  console.log('isAuth', isAuth);
-
   return (
     <Routes>
       <Route element={!isAuth ? <AuthLayout /> : <Navigate to="/" replace />}>
