@@ -8,7 +8,7 @@ import {
 } from '@/lib/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { doc, getDoc } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 
 // ----------------------------------------------------------------
@@ -16,8 +16,6 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 type Props = {};
 
 const ProfileEdit = (props: Props) => {
-  const [data, setData] = useState<Partial<IUserProfileSchemaDTO>>();
-
   const userId = auth.currentUser?.uid;
 
   const {
@@ -25,22 +23,23 @@ const ProfileEdit = (props: Props) => {
     register,
     formState: { errors },
     watch,
+    reset,
   } = useForm<IUserProfileSchema>({
     resolver: zodResolver(userProfileSchema),
     defaultValues: {
-      firstName: data?.firstName || '',
-      lastName: data?.lastName || '',
-      userName: data?.userName || '',
-      email: data?.email || '',
-      birthDate: data?.birthDate?.toDate() || undefined,
-      allergies: data?.allergies || '',
-      profileImg: data?.profileImg || '',
-      specialNotes: data?.specialNotes || '',
+      firstName: '',
+      lastName: '',
+      userName: '',
+      email: '',
+      birthDate: undefined,
+      allergies: '',
+      profileImg: '',
+      specialNotes: '',
       address: {
-        state: data?.address?.state || '',
-        city: data?.address?.city || '',
-        street: data?.address?.street || '',
-        phone: data?.address?.phone || '',
+        state: '',
+        city: '',
+        street: '',
+        phone: '',
       },
     },
   });
@@ -59,24 +58,32 @@ const ProfileEdit = (props: Props) => {
         const userDocSnap = await getDoc(userDocRef);
 
         if (userDocSnap.exists()) {
-          console.log('userDoc response', userDocSnap.data());
-
           const userData = userDocSnap.data() as Partial<IUserProfileSchemaDTO>;
 
-          setData(userData);
+          const data = {
+            firstName: userData?.firstName || '',
+            lastName: userData?.lastName || '',
+            userName: userData?.userName || '',
+            email: userData?.email || '',
+            birthDate: userData?.birthDate?.toDate() || undefined,
+            allergies: userData?.allergies || '',
+            profileImg: userData?.profileImg || '',
+            specialNotes: userData?.specialNotes || '',
+            address: {
+              state: userData?.address?.state || '',
+              city: userData?.address?.city || '',
+              street: userData?.address?.street || '',
+              phone: userData?.address?.phone || '',
+            },
+          };
+          reset(data);
         }
       } catch (error) {
         console.log('Error fetching user documents', error);
       }
     };
     fetchUserDoc();
-  }, [userId]);
-
-  useEffect(() => {
-    console.log('data', data);
-    // console.log('data TYPEOF', data?.createdAt);
-    // console.log('data TO DATE', data?.createdAt?.toDate());
-  }, [data]);
+  }, [userId, reset]);
 
   return (
     <section className="flex flex-col gap-2 sm:gap-4 flex-1 m-auto max-sm:w-[min(460px,100%)]">
