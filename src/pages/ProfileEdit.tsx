@@ -1,22 +1,37 @@
 import Input from '@/components/ui/Input';
 import Textarea from '@/components/ui/Textarea';
 import { auth, db } from '@/db';
-import { type IUserProfileSchema } from '@/lib/validation';
-import { doc, type DocumentData, getDoc } from 'firebase/firestore';
+import { type IUserProfileSchema, type IUserProfileSchemaDTO } from '@/lib/validation';
+import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { type SubmitHandler, useForm } from 'react-hook-form';
 
 // ----------------------------------------------------------------
 
 type Props = {};
 
 const ProfileEdit = (props: Props) => {
-  const [data, setData] = useState<DocumentData>();
+  const [data, setData] = useState<Partial<IUserProfileSchemaDTO>>();
 
   const userId = auth.currentUser?.uid;
 
   const { handleSubmit } = useForm<IUserProfileSchema>({
-    defaultValues: {},
+    defaultValues: {
+      firstName: data?.firstName || '',
+      lastName: data?.lastName || '',
+      userName: data?.userName || '',
+      email: data?.email || '',
+      birthDate: data?.birthDate?.toDate() || undefined,
+      allergies: data?.allergies || '',
+      profileImg: data?.profileImg || '',
+      specialNotes: data?.specialNotes || '',
+      address: {
+        state: data?.address?.state || '',
+        city: data?.address?.city || '',
+        street: data?.address?.street || '',
+        phone: data?.address?.phone || '',
+      },
+    },
   });
 
   const onSubmit: SubmitHandler<IUserProfileSchema> = (data) => {
@@ -26,15 +41,19 @@ const ProfileEdit = (props: Props) => {
   useEffect(() => {
     if (!userId) return;
     const fetchUserDoc = async () => {
-      const userDocRef = doc(db, 'users', userId);
-      const userDocSnap = await getDoc(userDocRef);
+      try {
+        const userDocRef = doc(db, 'users', userId);
+        const userDocSnap = await getDoc(userDocRef);
 
-      if (userDocSnap.exists()) {
-        console.log('userDoc response', userDocSnap.data());
+        if (userDocSnap.exists()) {
+          console.log('userDoc response', userDocSnap.data());
 
-        const userData = userDocSnap.data();
+          const userData = userDocSnap.data() as Partial<IUserProfileSchemaDTO>;
 
-        setData(userData);
+          setData(userData);
+        }
+      } catch (error) {
+        console.log('Error fetching user documents', error);
       }
     };
     fetchUserDoc();
@@ -42,6 +61,8 @@ const ProfileEdit = (props: Props) => {
 
   useEffect(() => {
     console.log('data', data);
+    // console.log('data TYPEOF', data?.createdAt);
+    // console.log('data TO DATE', data?.createdAt?.toDate());
   }, [data]);
 
   return (

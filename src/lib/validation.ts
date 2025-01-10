@@ -1,3 +1,4 @@
+import { Timestamp } from 'firebase/firestore';
 import { z } from 'zod';
 
 // ----------------------------------------------------------------
@@ -37,16 +38,25 @@ export const userProfileSchema = z.object({
   birthDate: z.date({ required_error: 'Date of birth is required' }).optional(),
   profileImg: z.string().trim().url().optional(),
   email: z.string().trim().email('Please provide valid email address'),
+  allergies: z.string().trim().optional(),
+  specialNotes: z.string().trim().optional(),
   address: z.object({
     state: z.string().trim().min(3, 'State is required'),
     city: z.string().trim().min(3, 'City is required'),
     street: z.string().trim().min(3, 'Street is required'),
     phone: z.string().trim().min(3, 'Phone is required'),
   }),
-  allergies: z.string().trim().optional(),
-  specialNotes: z.string().trim().optional(),
 });
 
 export type IUserProfileSchema = z.infer<typeof userProfileSchema>;
+
+export const userProfileSchemaDTO = userProfileSchema.extend({
+  id: z.string().trim(),
+  createdAt: z.instanceof(Timestamp),
+  updatedAt: z.instanceof(Timestamp),
+  birthDate: z.instanceof(Timestamp).optional(),
+});
+
+export type IUserProfileSchemaDTO = z.infer<typeof userProfileSchemaDTO>;
 
 /******************************** USER  ********************************/
