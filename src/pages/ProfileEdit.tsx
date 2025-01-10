@@ -1,3 +1,4 @@
+import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import Textarea from '@/components/ui/Textarea';
 import { auth, db } from '@/db';
@@ -7,7 +8,7 @@ import {
   type IUserProfileSchemaDTO,
 } from '@/lib/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { useEffect } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 
@@ -22,7 +23,6 @@ const ProfileEdit = (props: Props) => {
     handleSubmit,
     register,
     formState: { errors },
-    watch,
     reset,
   } = useForm<IUserProfileSchema>({
     resolver: zodResolver(userProfileSchema),
@@ -31,7 +31,7 @@ const ProfileEdit = (props: Props) => {
       lastName: '',
       userName: '',
       email: '',
-      birthDate: undefined,
+      birthDate: new Date(),
       allergies: '',
       profileImg: '',
       specialNotes: '',
@@ -44,10 +44,20 @@ const ProfileEdit = (props: Props) => {
     },
   });
 
-  console.log('watch', watch());
-
-  const onSubmit: SubmitHandler<IUserProfileSchema> = (data) => {
+  const onSubmit: SubmitHandler<IUserProfileSchema> = async (data) => {
     console.log('data u onSubmit', data);
+
+    try {
+      if (!userId) return;
+      const userDocRef = doc(db, 'users', userId);
+
+      await updateDoc(userDocRef, {
+        ...data,
+        updatedAt: serverTimestamp(),
+      });
+    } catch (error) {
+      console.log('Error updating User profile info', error);
+    }
   };
 
   useEffect(() => {
@@ -65,7 +75,7 @@ const ProfileEdit = (props: Props) => {
             lastName: userData?.lastName || '',
             userName: userData?.userName || '',
             email: userData?.email || '',
-            birthDate: userData?.birthDate?.toDate() || undefined,
+            birthDate: userData?.birthDate?.toDate() || new Date(),
             allergies: userData?.allergies || '',
             profileImg: userData?.profileImg || '',
             specialNotes: userData?.specialNotes || '',
@@ -158,6 +168,9 @@ const ProfileEdit = (props: Props) => {
               errorMessage={errors.address?.phone?.message}
             />
           </div>
+          <Button type="submit" className="w-full mt-4">
+            Submit
+          </Button>
         </div>
       </form>
     </section>
