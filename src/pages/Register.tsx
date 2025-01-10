@@ -5,7 +5,7 @@ import { type IRegisterForm, registerFormSchema } from '@/lib/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FirebaseError } from 'firebase/app';
 import { AuthErrorCodes, createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router';
@@ -39,8 +39,10 @@ const Register: React.FC = () => {
         id: response.user.uid,
         userName,
         email,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
       });
-      toast.success('You have successfully registered', { autoClose: 3000 });
+      toast.success('You have successfully created account', { autoClose: 3000 });
       navigate('/');
     } catch (error) {
       console.log('Error message', error);
