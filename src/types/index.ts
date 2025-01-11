@@ -1,5 +1,6 @@
 export interface IUserDTO {
   id: string;
+  userName: string;
   firstName: string;
   lastName: string;
   birthDate: number | string;
@@ -14,8 +15,8 @@ export interface IUserDTO {
   medicalExamination: IMedicalExaminationRecordDTO[]; // this is just string[] (id[]) and during fetch it will be populated with documents from collections
   vaccination: IVaccinationRecordDTO[]; // this is just string[] (id[]) and during fetch it will be populated with documents from collections
   activeMedicines: IMedicineRecordDTO[];
-  allergies?: string | string[];
-  accessibilityNeeds?: string | string[];
+  allergies?: string;
+  specialNotes?: string;
   createdAt: number; // ! Looks like I get this timestamp (1233212321) as number
   updatedAt: number; // ! Looks like I get this timestamp (1233212321) as number
 }

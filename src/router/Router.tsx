@@ -5,6 +5,7 @@ import CreateRecord from '@/pages/CreateRecord';
 import Dashboard from '@/pages/Dashboard';
 import Login from '@/pages/Login';
 import NotFound from '@/pages/NotFound';
+import ProfileEdit from '@/pages/ProfileEdit';
 import Register from '@/pages/Register';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
@@ -35,6 +36,7 @@ const Router: React.FC = () => {
       <Route element={isAuth ? <HomeLayout /> : <Navigate to="/login" replace />}>
         <Route index element={<Dashboard />} />
         <Route path="records/create" element={<CreateRecord />} />
+        <Route path="profile-edit" element={<ProfileEdit />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
