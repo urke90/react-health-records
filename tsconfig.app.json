@@ -31,7 +31,8 @@
       "@/router/*": ["src/router/*"],
       "@/assets/*": ["src/assets/*"],
       "@/db/*": ["src/db/*"],
-      "@/types/*": ["src/types/*"]
+      "@/types/*": ["src/types/*"],
+      "@/utils/*": ["src/utils/*"]
     }
   },
   "include": ["src"]
