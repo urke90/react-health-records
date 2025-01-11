@@ -2,9 +2,10 @@ import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import { auth } from '@/db';
 import { ILoginForm, loginFormSchema } from '@/lib/validation';
+import { errorMessageGenerator } from '@/utils/error-handling';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FirebaseError } from 'firebase/app';
-import { AuthErrorCodes, signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router';
@@ -37,11 +38,9 @@ const Login: React.FC = () => {
       console.log('Error message', error);
       // ? Da li je potrebno proveravati sve errore ili samo ovako neke kao email? Da li onda praviti neku klasu gde cu imati sve error.code i njihove specificne greske ali formatirane u  userfriendly formatu??? (ovo je vise primer, da li moram da proveravam pojedinacno ili mogu da setujem u error ceo error.message i samo da renderujem?)
       if (error instanceof FirebaseError) {
-        if (error.code === AuthErrorCodes.INVALID_LOGIN_CREDENTIALS) {
-          setError('Invalid login credentials!');
-        } else {
-          setError(error.message);
-        }
+        const errorMessage = errorMessageGenerator.getAuthErrorMessage(error.code);
+
+        setError(errorMessage);
       }
     }
   };
