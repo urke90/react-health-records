@@ -1,13 +1,8 @@
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
-import { auth, db } from '@/db';
+import { useRegisterUser } from '@/lib/hooks/mutations/use-register-user';
 import { type IRegisterForm, registerFormSchema } from '@/lib/validation';
-import { errorMessageGenerator } from '@/utils/error-handling';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FirebaseError } from 'firebase/app';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
-import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
@@ -15,8 +10,8 @@ import { toast } from 'react-toastify';
 // ----------------------------------------------------------------
 
 const Register: React.FC = () => {
-  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { error, mutateAsync: registerUserAsync } = useRegisterUser();
 
   const {
     register,
@@ -35,31 +30,18 @@ const Register: React.FC = () => {
     try {
       const { email, userName, password } = data;
 
-      const response = await createUserWithEmailAndPassword(auth, email, password);
-      await setDoc(doc(db, 'users', response.user.uid), {
-        id: response.user.uid,
-        userName,
-        email,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-      });
+      await registerUserAsync({ password, userName, email });
       toast.success('You have successfully created account', { autoClose: 3000 });
       navigate('/');
     } catch (error) {
-      console.log('Error message', error);
-      // ? Da li je potrebno proveravati sve errore ili samo ovako neke kao email? Da li onda praviti neku klasu gde cu imati sve error.code i njihove specificne greske ali formatirane u  userfriendly formatu??? (ovo je vise primer, da li moram da proveravam pojedinacno ili mogu da setujem u error ceo error.message i samo da renderujem?)
-      if (error instanceof FirebaseError) {
-        const errorMessage = errorMessageGenerator.getAuthErrorMessage(error.code);
-
-        setError(errorMessage);
-      }
+      console.log('Error creating new user', error);
     }
   };
 
   return (
     <div className="flex flex-col gap-3 shadow-xl bg-white w-[min(400px,100%)] p-2 sm:p-5">
       <h2 className="h2-bold text-center">Create Account</h2>
-      {error && <p className="p1-medium text-red-500 text-center">{error}</p>}
+      {error && <p className="p1-medium text-red-500 text-center">{error.message}</p>}
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
         <Input
           {...register('userName')}
