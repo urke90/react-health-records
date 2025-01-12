@@ -1,10 +1,13 @@
 import { auth, db } from '@/db';
+import type { IUserProfileSchema } from '@/lib/validation';
 import { errorMessageGenerator } from '@/utils/error-handling';
 import { FirebaseError } from 'firebase/app';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, FirestoreError, serverTimestamp, setDoc } from 'firebase/firestore';
+import { doc, FirestoreError, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
 
 // ----------------------------------------------------------------
+
+/********************************  AUTH  ********************************/
 
 export const registerUser = async (password: string, userName: string, email: string) => {
   try {
@@ -43,3 +46,27 @@ export const loginUser = async (email: string, password: string) => {
     }
   }
 };
+
+/********************************  AUTH  ********************************/
+
+/********************************  USER  ********************************/
+
+export const updateUserProfile = async (userId: string, data: IUserProfileSchema) => {
+  try {
+    if (!userId) return;
+    const userDocRef = doc(db, 'users', userId);
+
+    await updateDoc(userDocRef, {
+      ...data,
+      updatedAt: serverTimestamp(),
+    });
+  } catch (error) {
+    console.log('Error updating User profile info', error);
+    if (error instanceof FirestoreError) {
+      const errorMessage = errorMessageGenerator.getFirestoreErrorMessage(error.code);
+      throw new Error(errorMessage);
+    }
+  }
+};
+
+/********************************  USER  ********************************/
