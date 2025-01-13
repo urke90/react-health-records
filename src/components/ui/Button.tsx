@@ -5,7 +5,7 @@ import { twMerge } from 'tailwind-merge';
 
 const BUTTON_VARIANTS = {
   default:
-    'py-1.5 px-3 rounded-md border-2 border-transparent transition disabled:bg-gray-400 disabled:border-gray-400 disabled:text-white cursor-not-allowed',
+    'py-1.5 px-3 rounded-md border-2 border-transparent transition disabled:bg-gray-400 disabled:border-gray-400 disabled:text-white disabled:cursor-not-allowed',
   primary: 'bg-cyan-400 border-cyan-400 text-white hover:bg-cyan-500 hover:border-cyan-500 ',
   outlined: 'text-gray-700 border-cyan-400 hover:bg-cyan-400 hover:text-white',
 };
