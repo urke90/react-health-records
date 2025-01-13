@@ -1,4 +1,5 @@
 import Button from '@/components/ui/Button';
+import DatePicker from '@/components/ui/DatePicker';
 import Input from '@/components/ui/Input';
 import SpinningLoader from '@/components/ui/SpinningLoader';
 import Textarea from '@/components/ui/Textarea';
@@ -6,7 +7,7 @@ import { useUpdateUser } from '@/lib/hooks/mutations/use-update-user';
 import { useFetchUser } from '@/lib/hooks/queries/use-fetch-user';
 import { userProfileSchema, type IUserProfileSchema } from '@/lib/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, type SubmitHandler } from 'react-hook-form';
+import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 
@@ -21,6 +22,8 @@ const ProfileEdit = () => {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
+    control,
+    watch,
   } = useForm<IUserProfileSchema>({
     resolver: zodResolver(userProfileSchema),
     defaultValues: {
@@ -44,7 +47,7 @@ const ProfileEdit = () => {
       lastName: userData?.lastName || '',
       userName: userData?.userName || '',
       email: userData?.email || '',
-      birthDate: userData?.birthDate?.toDate() || new Date(),
+      birthDate: userData?.birthDate?.toDate() || undefined,
       allergies: userData?.allergies || '',
       profileImg: userData?.profileImg || '',
       specialNotes: userData?.specialNotes || '',
@@ -84,6 +87,8 @@ const ProfileEdit = () => {
     return <h2 className="h2-bold">{userDataError.message}</h2>;
   }
 
+  console.log('WATHC', watch());
+
   return (
     <section className="flex flex-col gap-2 sm:gap-4 flex-1 m-auto max-sm:w-[min(460px,100%)]">
       <h2 className="h2-bold">Your Health Card</h2>
@@ -114,6 +119,21 @@ const ProfileEdit = () => {
               placeholder="Email"
               {...register('email')}
               errorMessage={errors.email?.message}
+            />
+            <Controller
+              control={control}
+              name="birthDate"
+              render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                <DatePicker
+                  label="Birth Date"
+                  errorMessage={error?.message}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  selected={value}
+                  placeholderText="Click to select a date"
+                  maxDate={new Date()}
+                />
+              )}
             />
             <Textarea
               placeholder="Allergies"
