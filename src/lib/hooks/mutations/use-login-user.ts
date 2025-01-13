@@ -3,13 +3,13 @@ import { useMutation } from '@tanstack/react-query';
 
 // ----------------------------------------------------------------
 
-interface ILoginCredentials {
+interface IMutationFnArgs {
   email: string;
   password: string;
 }
 
 export const useLoginUser = () => {
   return useMutation({
-    mutationFn: ({ email, password }: ILoginCredentials) => loginUser(email, password),
+    mutationFn: ({ email, password }: IMutationFnArgs) => loginUser(email, password),
   });
 };

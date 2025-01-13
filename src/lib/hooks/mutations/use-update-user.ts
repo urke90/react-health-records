@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 // ----------------------------------------------------------------
 
-interface IQueryFnArgs {
+interface IMutationFnArgs {
   data: IUserProfileSchema;
 }
 
@@ -15,7 +15,7 @@ export const useUpdateUser = () => {
   const queryClent = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ data }: IQueryFnArgs) => updateUser(userId, data),
+    mutationFn: ({ data }: IMutationFnArgs) => updateUser(userId, data),
     onSuccess() {
       queryClent.invalidateQueries({
         queryKey: [EQueryKeys.USER, userId],

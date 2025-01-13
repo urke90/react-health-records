@@ -6,7 +6,6 @@ import { useUpdateUser } from '@/lib/hooks/mutations/use-update-user';
 import { useFetchUser } from '@/lib/hooks/queries/use-fetch-user';
 import { userProfileSchema, type IUserProfileSchema } from '@/lib/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
@@ -21,8 +20,7 @@ const ProfileEdit = () => {
   const {
     handleSubmit,
     register,
-    formState: { errors },
-    reset,
+    formState: { errors, isSubmitting },
   } = useForm<IUserProfileSchema>({
     resolver: zodResolver(userProfileSchema),
     defaultValues: {
@@ -39,6 +37,22 @@ const ProfileEdit = () => {
         city: '',
         street: '',
         phone: '',
+      },
+    },
+    values: {
+      firstName: userData?.firstName || '',
+      lastName: userData?.lastName || '',
+      userName: userData?.userName || '',
+      email: userData?.email || '',
+      birthDate: userData?.birthDate?.toDate() || new Date(),
+      allergies: userData?.allergies || '',
+      profileImg: userData?.profileImg || '',
+      specialNotes: userData?.specialNotes || '',
+      address: {
+        state: userData?.address?.state || '',
+        city: userData?.address?.city || '',
+        street: userData?.address?.street || '',
+        phone: userData?.address?.phone || '',
       },
     },
   });
@@ -61,29 +75,6 @@ const ProfileEdit = () => {
       console.log('Error updating User profile info', error);
     }
   };
-
-  useEffect(() => {
-    if (userData) {
-      const data = {
-        firstName: userData?.firstName || '',
-        lastName: userData?.lastName || '',
-        userName: userData?.userName || '',
-        email: userData?.email || '',
-        birthDate: userData?.birthDate?.toDate() || new Date(),
-        allergies: userData?.allergies || '',
-        profileImg: userData?.profileImg || '',
-        specialNotes: userData?.specialNotes || '',
-        address: {
-          state: userData?.address?.state || '',
-          city: userData?.address?.city || '',
-          street: userData?.address?.street || '',
-          phone: userData?.address?.phone || '',
-        },
-      };
-
-      reset(data);
-    }
-  }, [userData, reset]);
 
   if (isPending) {
     return <SpinningLoader asLayout />;
@@ -166,7 +157,7 @@ const ProfileEdit = () => {
               errorMessage={errors.address?.phone?.message}
             />
           </div>
-          <Button type="submit" className="w-full mt-4">
+          <Button type="submit" className="w-full mt-4" disabled={isSubmitting}>
             Submit
           </Button>
         </div>
