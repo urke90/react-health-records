@@ -2,22 +2,21 @@ import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import SpinningLoader from '@/components/ui/SpinningLoader';
 import Textarea from '@/components/ui/Textarea';
-import { auth, db } from '@/db';
+import { useUpdateUser } from '@/lib/hooks/mutations/use-update-user';
 import { useFetchUser } from '@/lib/hooks/queries/use-fetch-user';
 import { userProfileSchema, type IUserProfileSchema } from '@/lib/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { useEffect } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
+import { useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 
 // ----------------------------------------------------------------
 
-type Props = {};
-
-const ProfileEdit = (props: Props) => {
-  const userId = auth.currentUser?.uid;
-
+const ProfileEdit = () => {
   const { data: userData, isPending, error: userDataError } = useFetchUser();
+  const { mutateAsync: updateUserAsync } = useUpdateUser();
+  const navigate = useNavigate();
 
   const {
     handleSubmit,
@@ -46,13 +45,18 @@ const ProfileEdit = (props: Props) => {
 
   const onSubmit: SubmitHandler<IUserProfileSchema> = async (data) => {
     try {
-      if (!userId) return;
-      const userDocRef = doc(db, 'users', userId);
-
-      await updateDoc(userDocRef, {
-        ...data,
-        updatedAt: serverTimestamp(),
-      });
+      await updateUserAsync(
+        { data },
+        {
+          onError(error) {
+            toast.error(error.message);
+          },
+          onSuccess() {
+            toast.success('Profile updated successfully');
+            navigate('/');
+          },
+        }
+      );
     } catch (error) {
       console.log('Error updating User profile info', error);
     }

@@ -51,9 +51,8 @@ export const loginUser = async (email: string, password: string) => {
 
 /********************************  USER  ********************************/
 
-export const updateUserProfile = async (userId: string, data: IUserProfileSchema) => {
+export const updateUser = async (userId: string, data: IUserProfileSchema) => {
   try {
-    if (!userId) return;
     const userDocRef = doc(db, 'users', userId);
 
     await updateDoc(userDocRef, {

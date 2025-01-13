@@ -23,5 +23,5 @@ export const NAVIGATION_OPTIONS = [
 ];
 
 export enum EQueryKeys {
-  FETCH_USER = 'FETCH_USER',
+  USER = 'user',
 }
