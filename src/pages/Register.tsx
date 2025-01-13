@@ -16,7 +16,7 @@ const Register: React.FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -30,9 +30,15 @@ const Register: React.FC = () => {
     try {
       const { email, userName, password } = data;
 
-      await registerUserAsync({ password, userName, email });
-      toast.success('You have successfully created account', { autoClose: 3000 });
-      navigate('/');
+      await registerUserAsync(
+        { password, userName, email },
+        {
+          onSuccess() {
+            toast.success('You have successfully created account', { autoClose: 3000 });
+            navigate('/');
+          },
+        }
+      );
     } catch (error) {
       console.log('Error creating new user', error);
     }
@@ -64,8 +70,8 @@ const Register: React.FC = () => {
           label="Your Password"
           errorMessage={errors.password?.message}
         />
-        <Button type="submit" className="w-full">
-          Sign Up
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+          {isSubmitting ? 'Processing...' : 'Sign Up'}
         </Button>
       </form>
       <div className="flex flex-col gap-2 text-center ">

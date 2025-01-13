@@ -16,7 +16,7 @@ const Login: React.FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -29,8 +29,14 @@ const Login: React.FC = () => {
     try {
       const { email, password } = data;
 
-      await loginUserAsync({ email, password });
-      navigate('/');
+      await loginUserAsync(
+        { email, password },
+        {
+          onSuccess() {
+            navigate('/');
+          },
+        }
+      );
     } catch (error) {
       // ? immam vec try catch u loginUser function-u koju prosledjuem useMutation-u, da li je redundant da onda i u onSubmit-u imam ovaj try catch
       console.log('Error message in onSubmit login user', error);
@@ -56,8 +62,8 @@ const Login: React.FC = () => {
           label="Your Password"
           errorMessage={errors.password?.message}
         />
-        <Button type="submit" className="w-full">
-          Sign In
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+          {isSubmitting ? 'Processing...' : 'Sign In'}
         </Button>
       </form>
       <div className="flex flex-col gap-2 text-center ">
