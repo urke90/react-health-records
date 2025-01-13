@@ -21,3 +21,7 @@ export const NAVIGATION_OPTIONS = [
     icon: ProfileEditIcon,
   },
 ];
+
+export enum EQueryKeys {
+  USER = 'user',
+}

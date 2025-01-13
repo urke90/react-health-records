@@ -1,29 +1,26 @@
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
+import SpinningLoader from '@/components/ui/SpinningLoader';
 import Textarea from '@/components/ui/Textarea';
-import { auth, db } from '@/db';
-import {
-  userProfileSchema,
-  type IUserProfileSchema,
-  type IUserProfileSchemaDTO,
-} from '@/lib/validation';
+import { useUpdateUser } from '@/lib/hooks/mutations/use-update-user';
+import { useFetchUser } from '@/lib/hooks/queries/use-fetch-user';
+import { userProfileSchema, type IUserProfileSchema } from '@/lib/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { doc, getDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
-import { useEffect } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
+import { useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 
 // ----------------------------------------------------------------
 
-type Props = {};
-
-const ProfileEdit = (props: Props) => {
-  const userId = auth.currentUser?.uid;
+const ProfileEdit = () => {
+  const { data: userData, isPending, error: userDataError } = useFetchUser();
+  const { mutateAsync: updateUserAsync } = useUpdateUser();
+  const navigate = useNavigate();
 
   const {
     handleSubmit,
     register,
-    formState: { errors },
-    reset,
+    formState: { errors, isSubmitting },
   } = useForm<IUserProfileSchema>({
     resolver: zodResolver(userProfileSchema),
     defaultValues: {
@@ -31,7 +28,7 @@ const ProfileEdit = (props: Props) => {
       lastName: '',
       userName: '',
       email: '',
-      birthDate: new Date(),
+      birthDate: undefined,
       allergies: '',
       profileImg: '',
       specialNotes: '',
@@ -42,58 +39,50 @@ const ProfileEdit = (props: Props) => {
         phone: '',
       },
     },
+    values: {
+      firstName: userData?.firstName || '',
+      lastName: userData?.lastName || '',
+      userName: userData?.userName || '',
+      email: userData?.email || '',
+      birthDate: userData?.birthDate?.toDate() || new Date(),
+      allergies: userData?.allergies || '',
+      profileImg: userData?.profileImg || '',
+      specialNotes: userData?.specialNotes || '',
+      address: {
+        state: userData?.address?.state || '',
+        city: userData?.address?.city || '',
+        street: userData?.address?.street || '',
+        phone: userData?.address?.phone || '',
+      },
+    },
   });
 
   const onSubmit: SubmitHandler<IUserProfileSchema> = async (data) => {
-    console.log('data u onSubmit', data);
-
     try {
-      if (!userId) return;
-      const userDocRef = doc(db, 'users', userId);
-
-      await updateDoc(userDocRef, {
-        ...data,
-        updatedAt: serverTimestamp(),
-      });
+      await updateUserAsync(
+        { data },
+        {
+          onError(error) {
+            toast.error(error.message);
+          },
+          onSuccess() {
+            toast.success('Profile updated successfully');
+            navigate('/');
+          },
+        }
+      );
     } catch (error) {
       console.log('Error updating User profile info', error);
     }
   };
 
-  useEffect(() => {
-    if (!userId) return;
-    const fetchUserDoc = async () => {
-      try {
-        const userDocRef = doc(db, 'users', userId);
-        const userDocSnap = await getDoc(userDocRef);
+  if (isPending) {
+    return <SpinningLoader asLayout />;
+  }
 
-        if (userDocSnap.exists()) {
-          const userData = userDocSnap.data() as Partial<IUserProfileSchemaDTO>;
-
-          const data = {
-            firstName: userData?.firstName || '',
-            lastName: userData?.lastName || '',
-            userName: userData?.userName || '',
-            email: userData?.email || '',
-            birthDate: userData?.birthDate?.toDate() || new Date(),
-            allergies: userData?.allergies || '',
-            profileImg: userData?.profileImg || '',
-            specialNotes: userData?.specialNotes || '',
-            address: {
-              state: userData?.address?.state || '',
-              city: userData?.address?.city || '',
-              street: userData?.address?.street || '',
-              phone: userData?.address?.phone || '',
-            },
-          };
-          reset(data);
-        }
-      } catch (error) {
-        console.log('Error fetching user documents', error);
-      }
-    };
-    fetchUserDoc();
-  }, [userId, reset]);
+  if (userDataError) {
+    return <h2 className="h2-bold">{userDataError.message}</h2>;
+  }
 
   return (
     <section className="flex flex-col gap-2 sm:gap-4 flex-1 m-auto max-sm:w-[min(460px,100%)]">
@@ -168,8 +157,8 @@ const ProfileEdit = (props: Props) => {
               errorMessage={errors.address?.phone?.message}
             />
           </div>
-          <Button type="submit" className="w-full mt-4">
-            Submit
+          <Button type="submit" className="w-full mt-4" disabled={isSubmitting}>
+            {isSubmitting ? 'Processing...' : 'Submit'}
           </Button>
         </div>
       </form>
