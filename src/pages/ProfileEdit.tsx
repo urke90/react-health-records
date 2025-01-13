@@ -17,7 +17,7 @@ type Props = {};
 const ProfileEdit = (props: Props) => {
   const userId = auth.currentUser?.uid;
 
-  const { data: userData, isPending, error: userDataError } = useFetchUser(userId!);
+  const { data: userData, isPending, error: userDataError } = useFetchUser();
 
   const {
     handleSubmit,
