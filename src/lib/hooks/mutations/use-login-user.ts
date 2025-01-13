@@ -23,6 +23,7 @@ export const useLoginUser = () => {
 
           throw new Error(errorMessage);
         }
+        throw new Error('An unexpected error occurred');
       }
     },
   });

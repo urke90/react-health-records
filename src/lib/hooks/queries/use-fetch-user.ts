@@ -28,7 +28,7 @@ export const useFetchUser = () => {
           const errorMessage = errorMessageGenerator.getFirestoreErrorMessage(error.code);
           throw new Error(errorMessage);
         }
-        throw new Error('Something went wrong fetching user data');
+        throw new Error('An unexpected error occurred');
       }
     },
   });

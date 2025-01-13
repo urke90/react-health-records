@@ -30,6 +30,7 @@ export const useUpdateUser = () => {
           const errorMessage = errorMessageGenerator.getFirestoreErrorMessage(error.code);
           throw new Error(errorMessage);
         }
+        throw new Error('An unexpected error occurred');
       }
     },
     onSuccess() {
