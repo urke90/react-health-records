@@ -158,7 +158,7 @@ const ProfileEdit = () => {
             />
           </div>
           <Button type="submit" className="w-full mt-4" disabled={isSubmitting}>
-            Submit
+            {isSubmitting ? 'Processing...' : 'Submit'}
           </Button>
         </div>
       </form>
