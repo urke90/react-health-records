@@ -1,7 +1,7 @@
 import Button from '@/components/ui/Button';
 import DatePicker from '@/components/ui/DatePicker';
 import Input from '@/components/ui/Input';
-import SpinningLoader from '@/components/ui/SpinningLoader';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import Textarea from '@/components/ui/Textarea';
 import { useUpdateUser } from '@/lib/hooks/mutations/use-update-user';
 import { useFetchUser } from '@/lib/hooks/queries/use-fetch-user';
@@ -80,7 +80,7 @@ const ProfileEdit = () => {
   };
 
   if (isPending) {
-    return <SpinningLoader asLayout />;
+    return <LoadingSpinner asLayout />;
   }
 
   if (userDataError) {

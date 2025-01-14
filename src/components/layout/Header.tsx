@@ -1,18 +1,28 @@
 import Logo from '@/assets/images/logo.svg';
 import { auth } from '@/db';
 import { NAVIGATION_OPTIONS } from '@/lib/constants';
+import { useFetchUser } from '@/lib/hooks/queries/use-fetch-user';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { signOut } from 'firebase/auth';
 import { Link, NavLink } from 'react-router';
 import LogoutIcon from '../icons/Logout';
 import MenuIcon from '../icons/Menu';
+import LoadingSpinner from '../ui/LoadingSpinner';
 
 // ----------------------------------------------------------------
 
 const Header: React.FC = () => {
+  const { data, isPending } = useFetchUser();
+
+  console.log('DATA U HEADER', data);
+
   const name = 'Uros Bijelic';
   const splitName = name.split(' ');
   const initials = splitName[0].charAt(0) + splitName[1].charAt(0);
+
+  if (isPending) {
+    return <LoadingSpinner asLayout />;
+  }
 
   return (
     <header className="flex-between px-2 sm:px-5 h-[80px] shadow-md sticky left-0 top-0">
