@@ -1,12 +1,12 @@
 interface ILoadingSpinnerProps {
-  asLayout?: boolean;
+  asOverlay?: boolean;
 }
 
-const LoadingSpinner: React.FC<ILoadingSpinnerProps> = ({ asLayout }) => {
+const LoadingSpinner: React.FC<ILoadingSpinnerProps> = ({ asOverlay }) => {
   return (
     <div
       className={
-        asLayout
+        asOverlay
           ? 'h-screen absolute z-[1000000] top-0 left-0 w-full flex-center bg-slate-950/95'
           : ''
       }

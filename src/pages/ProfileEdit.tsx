@@ -23,7 +23,6 @@ const ProfileEdit = () => {
     register,
     formState: { errors, isSubmitting },
     control,
-    watch,
   } = useForm<IUserProfileSchema>({
     resolver: zodResolver(userProfileSchema),
     defaultValues: {
@@ -80,14 +79,12 @@ const ProfileEdit = () => {
   };
 
   if (isPending) {
-    return <LoadingSpinner asLayout />;
+    return <LoadingSpinner asOverlay />;
   }
 
   if (userDataError) {
     return <h2 className="h2-bold">{userDataError.message}</h2>;
   }
-
-  console.log('WATHC', watch());
 
   return (
     <section className="flex flex-col gap-2 sm:gap-4 flex-1 m-auto max-sm:w-[min(460px,100%)]">
