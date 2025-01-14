@@ -9,7 +9,7 @@ type Props = {};
 
 const HomeLayout = (props: Props) => {
   return (
-    <section className="w-[min(1536px,100%)] m-auto">
+    <section className="w-[min(1536px,100%)]">
       <Header />
       <div className="flex">
         <div className="max-sm:hidden">

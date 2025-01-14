@@ -1,7 +1,7 @@
 import Button from '@/components/ui/Button';
 import DatePicker from '@/components/ui/DatePicker';
 import Input from '@/components/ui/Input';
-import SpinningLoader from '@/components/ui/SpinningLoader';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import Textarea from '@/components/ui/Textarea';
 import { useUpdateUser } from '@/lib/hooks/mutations/use-update-user';
 import { useFetchUser } from '@/lib/hooks/queries/use-fetch-user';
@@ -23,7 +23,6 @@ const ProfileEdit = () => {
     register,
     formState: { errors, isSubmitting },
     control,
-    watch,
   } = useForm<IUserProfileSchema>({
     resolver: zodResolver(userProfileSchema),
     defaultValues: {
@@ -80,14 +79,12 @@ const ProfileEdit = () => {
   };
 
   if (isPending) {
-    return <SpinningLoader asLayout />;
+    return <LoadingSpinner asOverlay />;
   }
 
   if (userDataError) {
     return <h2 className="h2-bold">{userDataError.message}</h2>;
   }
-
-  console.log('WATHC', watch());
 
   return (
     <section className="flex flex-col gap-2 sm:gap-4 flex-1 m-auto max-sm:w-[min(460px,100%)]">

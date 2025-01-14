@@ -1,12 +1,14 @@
-interface ISpinningLoaderProps {
-  asLayout?: boolean;
+interface ILoadingSpinnerProps {
+  asOverlay?: boolean;
 }
 
-const SpinningLoader: React.FC<ISpinningLoaderProps> = ({ asLayout }) => {
+const LoadingSpinner: React.FC<ILoadingSpinnerProps> = ({ asOverlay }) => {
   return (
     <div
       className={
-        asLayout ? 'h-screen absolute top-0 left-0 w-full flex-center bg-slate-900/95' : ''
+        asOverlay
+          ? 'h-screen absolute z-[1000000] top-0 left-0 w-full flex-center bg-slate-950/95'
+          : ''
       }
     >
       <div role="status">
@@ -32,4 +34,4 @@ const SpinningLoader: React.FC<ISpinningLoaderProps> = ({ asLayout }) => {
   );
 };
 
-export default SpinningLoader;
+export default LoadingSpinner;
