@@ -3,6 +3,10 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      gridTemplateColumns: {
+        'auto-fill-200': 'repeat(auto-fill, minmax(200px, 1fr))',
+        'auto-fit-200': 'repeat(auto-fit, minmax(200px, 1fr))',
+      },
       keyframes: {
         hide: {
           from: { opacity: '1' },

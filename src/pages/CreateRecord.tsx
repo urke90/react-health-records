@@ -1,37 +1,30 @@
 import Button from '@/components/ui/Button';
+import { ERecordType } from '@/types';
 import { useState } from 'react';
 
 // ----------------------------------------------------------------
 
-enum ERecordType {
-  MEDICAL_EXAMINATION = 'MEDICAL_EXAMINATION',
-  VACCINATION = 'VACCINATION',
-  MEDICINE = 'MEDICINE',
-}
-
 const CreateRecord: React.FC = () => {
   const [chosenRecord, setChosenRecord] = useState<ERecordType>();
   return (
-    <div className="p-5 ">
+    <div className="p-5">
       <h2 className="h2-bold mb-4">New Record</h2>
       <div className="flex flex-col gap-4 md:flex-row">
         {!chosenRecord ? (
-          <>
+          <div className="grid grid-cols-auto-fit-200 gap-4 w-full">
             <MedicalExaminationCard
               onClick={() => setChosenRecord(ERecordType.MEDICAL_EXAMINATION)}
             />
             <VaccinationRecordCard onClick={() => setChosenRecord(ERecordType.VACCINATION)} />
             <MedicineRecordCard onClick={() => setChosenRecord(ERecordType.MEDICINE)} />
-          </>
+          </div>
         ) : (
           <div className="flex flex-col gap-10 flex-1">
             <div className="flex flex-wrap gap-3 w-[min(500px,100%)] [&>button]:flex-1">
               <Button onClick={() => setChosenRecord(ERecordType.MEDICAL_EXAMINATION)}>
                 Examination
               </Button>
-              <Button onClick={() => setChosenRecord(ERecordType.VACCINATION)} variant="outlined">
-                Vaccination
-              </Button>
+              <Button onClick={() => setChosenRecord(ERecordType.VACCINATION)}>Vaccination</Button>
               <Button onClick={() => setChosenRecord(ERecordType.MEDICINE)}>Medicine</Button>
             </div>
             <div>FORMA ZA KRERANJE {chosenRecord}</div>
@@ -50,7 +43,7 @@ const MedicalExaminationCard: React.FC<ICardProps> = ({ onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="flex flex-col gap-2 shadow-lg bg-slate-100 p-3 cursor-pointer hover:-translate-y-2 transition flex-1 text-emerald-500"
+      className="flex flex-col gap-2 shadow-lg bg-slate-100 p-5 cursor-pointer hover:-translate-y-2 transition flex-1 text-emerald-500"
     >
       <p className="p3-medium">Medical Examination</p>
       <ol className="flex flex-col gap-2 list-decimal pl-3.5">
@@ -70,7 +63,7 @@ const VaccinationRecordCard: React.FC<ICardProps> = ({ onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="flex flex-col gap-2 shadow-lg bg-slate-100 p-3 cursor-pointer hover:-translate-y-2 transition flex-1 text-amber-500"
+      className="flex flex-col gap-2 shadow-lg bg-slate-100 p-5 cursor-pointer hover:-translate-y-2 transition flex-1 text-amber-500"
     >
       <p className="p3-medium">Vaccination Record</p>
       <ol className="flex flex-col gap-2 list-decimal pl-3.5">
@@ -92,7 +85,7 @@ const MedicineRecordCard: React.FC<ICardProps> = ({ onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="flex flex-col gap-2 shadow-lg bg-slate-100 p-3 cursor-pointer hover:-translate-y-2 transition flex-1 text-violet-500"
+      className="flex flex-col gap-2 shadow-lg bg-slate-100 p-5 cursor-pointer hover:-translate-y-2 transition flex-1 text-violet-500"
     >
       <p className="p3-medium">Medicine Record</p>
       <ol className="flex flex-col gap-2 list-decimal pl-3.5">
