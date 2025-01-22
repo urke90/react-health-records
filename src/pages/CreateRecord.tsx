@@ -1,3 +1,4 @@
+import Button from '@/components/ui/Button';
 import { useState } from 'react';
 
 // ----------------------------------------------------------------
@@ -8,15 +9,34 @@ enum ERecordType {
   MEDICINE = 'MEDICINE',
 }
 
-const CreateRecord: React.FC = (props) => {
-  const [recordType, setRecordType] = useState<ERecordType>();
+const CreateRecord: React.FC = () => {
+  const [chosenRecord, setChosenRecord] = useState<ERecordType>();
   return (
     <div className="p-5 ">
-      <h2 className="h2-bold mb-4">Create new record</h2>
-      <div className="flex flex-col gap-4 md:flex-row ">
-        <MedicalExaminationCard onClick={() => setRecordType(ERecordType.MEDICAL_EXAMINATION)} />
-        <VaccinationRecordCard onClick={() => setRecordType(ERecordType.VACCINATION)} />
-        <MedicineRecordCard onClick={() => setRecordType(ERecordType.MEDICINE)} />
+      <h2 className="h2-bold mb-4">New Record</h2>
+      <div className="flex flex-col gap-4 md:flex-row">
+        {!chosenRecord ? (
+          <>
+            <MedicalExaminationCard
+              onClick={() => setChosenRecord(ERecordType.MEDICAL_EXAMINATION)}
+            />
+            <VaccinationRecordCard onClick={() => setChosenRecord(ERecordType.VACCINATION)} />
+            <MedicineRecordCard onClick={() => setChosenRecord(ERecordType.MEDICINE)} />
+          </>
+        ) : (
+          <div className="flex flex-col gap-10 flex-1">
+            <div className="flex flex-wrap gap-3 w-[min(500px,100%)] [&>button]:flex-1">
+              <Button onClick={() => setChosenRecord(ERecordType.MEDICAL_EXAMINATION)}>
+                Examination
+              </Button>
+              <Button onClick={() => setChosenRecord(ERecordType.VACCINATION)} variant="outlined">
+                Vaccination
+              </Button>
+              <Button onClick={() => setChosenRecord(ERecordType.MEDICINE)}>Medicine</Button>
+            </div>
+            <div>FORMA ZA KRERANJE {chosenRecord}</div>
+          </div>
+        )}
       </div>
     </div>
   );
