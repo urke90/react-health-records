@@ -1,3 +1,11 @@
+export enum ERecordType {
+  MEDICAL_EXAMINATION = 'MEDICAL_EXAMINATION',
+  VACCINATION = 'VACCINATION',
+  MEDICINE = 'MEDICINE',
+}
+
+/*************************************** THESE ARE FOR PLANNING APPLICATION MADE, REMOVE THEM LATER IF NOT NEEDED ******************************/
+
 export interface IUserDTO {
   id: string;
   userName: string;
@@ -62,3 +70,5 @@ interface IVaccinationRecordDTO {
   createdAt: number;
   updatedAt: number;
 }
+
+/*************************************** THESE ARE FOR PLANNING APPLICATION MADE, REMOVE THEM LATER IF NOT NEEDED ******************************/

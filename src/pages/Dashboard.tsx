@@ -1,9 +1,7 @@
-type Props = {};
-
-const Dashboard = (props: Props) => {
+const Dashboard: React.FC = () => {
   return (
-    <div className="p-5">
-      <p className="mb-2">Dashboard Page</p>
+    <div>
+      <h2 className="h2-bold">Dashboard Page</h2>
     </div>
   );
 };
