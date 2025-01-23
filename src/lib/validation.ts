@@ -54,3 +54,24 @@ export const userProfileSchemaDTO = userProfileSchema.extend({
 export type IUserProfileSchemaDTO = z.infer<typeof userProfileSchemaDTO>;
 
 /******************************** USER  ********************************/
+
+/******************************** MEDICAL EXAMINATION ********************************/
+
+export const baseMedicalExaminationSchema = z.object({
+  appointmentTime: z.date({
+    required_error: 'Appointment time is required',
+    message: 'Please add valid date and time',
+  }),
+  doctor: z.object({
+    name: z.string().trim().optional(),
+    office: z.string().trim().optional(),
+  }),
+  symptomes: z.string().trim().optional(),
+  specialNotes: z.string().trim().optional(),
+  // createdAt: z.instanceof(Timestamp),
+  // updatedAt: z.instanceof(Timestamp),
+});
+
+export type IBaseMedicalExaminationSchema = z.infer<typeof baseMedicalExaminationSchema>;
+
+/******************************** MEDICAL EXAMINATION ********************************/
