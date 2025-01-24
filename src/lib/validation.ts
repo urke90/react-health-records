@@ -68,6 +68,7 @@ export const baseMedicalExaminationSchema = z.object({
   }),
   symptomes: z.string().trim().optional(),
   specialNotes: z.string().trim().optional(),
+  createNotification: z.boolean(),
   // createdAt: z.instanceof(Timestamp),
   // updatedAt: z.instanceof(Timestamp),
 });
