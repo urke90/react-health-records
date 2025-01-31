@@ -3,9 +3,12 @@ import DatePicker from '@/components/ui/DatePicker';
 import Input from '@/components/ui/Input';
 import RHFChecbox from '@/components/ui/RHFInputs/RHFChecbox';
 import Textarea from '@/components/ui/Textarea';
+import { useCreateMedicalExamination } from '@/lib/hooks/mutations/use-create-examination';
 import { baseMedicalExaminationSchema, IBaseMedicalExaminationSchema } from '@/lib/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 
 // ----------------------------------------------------------------
 
@@ -27,23 +30,36 @@ const CreateExaminationForm: React.FC<ICreateUpdateExaminationFormProps> = ({ is
       createNotification: false,
     },
   });
+  const navigate = useNavigate();
+
+  const { error, mutateAsync: createMedicalExaminationAsync } = useCreateMedicalExamination();
 
   const {
     handleSubmit,
-    formState: {
-      errors,
-      isSubmitting,
-      isValid,
-      // touchedFields: { appointmentTime },
-      dirtyFields: { appointmentTime },
-    },
+    formState: { errors, isSubmitting, dirtyFields },
     control,
-    watch,
+    reset,
     register,
   } = methods;
 
-  const onSubmit = (data: IBaseMedicalExaminationSchema) => {
-    console.log('data u onSubmit', data);
+  const onSubmit = async (data: IBaseMedicalExaminationSchema) => {
+    try {
+      await createMedicalExaminationAsync(data, {
+        onSuccess() {
+          toast.success('You have successfully created a new appointment');
+          reset();
+          const timeout = setTimeout(() => {
+            navigate('/');
+          }, 2000);
+
+          return () => {
+            clearTimeout(timeout);
+          };
+        },
+      });
+    } catch (error) {
+      console.log('Error create exmmination form', error);
+    }
   };
 
   const latestAppontmentTime = new Date().setHours(23, 30, 0);
@@ -51,6 +67,7 @@ const CreateExaminationForm: React.FC<ICreateUpdateExaminationFormProps> = ({ is
   return (
     <div className="flex flex-col gap-2">
       <p className="p1-bold">New Examination Record</p>
+      {error && <p className="p1-bold text-red-500">{error.message}</p>}
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2 w-[min(500px,100%)]">
           <Controller
@@ -93,8 +110,12 @@ const CreateExaminationForm: React.FC<ICreateUpdateExaminationFormProps> = ({ is
             {...register('specialNotes')}
             errorMessage={errors.specialNotes?.message}
           />
-          <RHFChecbox name="notification" label="Create notification?" />
-          <Button type="submit" className="mt-2" disabled={isSubmitting || !appointmentTime}>
+          <RHFChecbox name="createNotification" label="Create notification?" />
+          <Button
+            type="submit"
+            className="mt-2"
+            disabled={isSubmitting || !dirtyFields.appointmentTime}
+          >
             Submit
           </Button>
         </form>

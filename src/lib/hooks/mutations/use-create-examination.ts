@@ -12,13 +12,16 @@ export const useCreateMedicalExamination = () => {
   return useMutation({
     mutationFn: async (data: IBaseMedicalExaminationSchema) => {
       try {
-        const docRef = await addDoc(collection(db, userId), {
+        const docRef = await addDoc(collection(db, 'users', userId, 'medicalExamination'), {
           ...data,
+          followUpExamination: null,
+          prescription: '',
+          medicines: '',
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
         });
 
-        console.log('docRef', docRef);
+        console.log('docRef CREATE MEDICAL EXAMINATION', docRef);
       } catch (error) {
         console.log('Error creating new medical examination', error);
         if (error instanceof FirestoreError) {

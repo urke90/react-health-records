@@ -40,7 +40,7 @@ interface IMedicalExaminationRecordDTO {
     name: string;
     office?: string;
   };
-  followUpExamination: number | string | null; // da li ovo treba da konvertujem u timestamp
+  followUpExamination: number | null; // da li ovo treba da konvertujem u timestamp
   createdAt: number;
   updatedAt: number;
 }
