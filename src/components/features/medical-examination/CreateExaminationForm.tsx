@@ -73,21 +73,32 @@ const CreateExaminationForm: React.FC<ICreateUpdateExaminationFormProps> = ({ is
           <Controller
             name="appointmentTime"
             control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <DatePicker
-                label="Appontment Time"
-                showTimeSelect
-                onChange={onChange}
-                onBlur={onBlur}
-                selected={value}
-                timeIntervals={5}
-                minDate={new Date()}
-                dateFormat="MMMM d, yyyy h:mm aa"
-                minTime={new Date()}
-                maxTime={new Date(latestAppontmentTime)}
-                errorMessage={errors.appointmentTime?.message}
-              />
-            )}
+            render={({ field: { onChange, onBlur, value } }) => {
+              const selectedDate = new Date(value);
+              const currentDate = new Date();
+
+              const isToday = selectedDate.toDateString() === currentDate.toDateString();
+
+              const minSelectableTime = isToday
+                ? currentDate
+                : new Date(selectedDate.setHours(6, 0, 0));
+
+              return (
+                <DatePicker
+                  label="Appontment Time"
+                  showTimeSelect
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  selected={value}
+                  timeIntervals={5}
+                  minDate={new Date()}
+                  dateFormat="MMMM d, yyyy h:mm aa"
+                  minTime={minSelectableTime}
+                  maxTime={new Date(latestAppontmentTime)}
+                  errorMessage={errors.appointmentTime?.message}
+                />
+              );
+            }}
           />
 
           <Input
