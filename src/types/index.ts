@@ -36,7 +36,11 @@ interface IMedicalExaminationRecordDTO {
   prescription: string;
   symptomes?: string | string[];
   medicines: IMedicineRecordDTO[];
-  followUpExamination: number | string | null; // da li ovo treba da konvertujem u timestamp
+  doctor: {
+    name: string;
+    office?: string;
+  };
+  followUpExamination: number | null; // da li ovo treba da konvertujem u timestamp
   createdAt: number;
   updatedAt: number;
 }

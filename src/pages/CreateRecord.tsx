@@ -1,3 +1,4 @@
+import ExaminationCreateUpdateForm from '@/components/features/medical-examination/CreateExaminationForm';
 import Button from '@/components/ui/Button';
 import { ERecordType } from '@/types';
 import { useState } from 'react';
@@ -27,7 +28,9 @@ const CreateRecord: React.FC = () => {
               <Button onClick={() => setChosenRecord(ERecordType.VACCINATION)}>Vaccination</Button>
               <Button onClick={() => setChosenRecord(ERecordType.MEDICINE)}>Medicine</Button>
             </div>
-            <div>FORMA ZA KRERANJE {chosenRecord}</div>
+            <div>
+              <ExaminationCreateUpdateForm />
+            </div>
           </div>
         )}
       </div>

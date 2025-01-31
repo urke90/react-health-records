@@ -21,3 +21,41 @@ export const auth = getAuth(app);
 
 // ? Export this variable for now, till i decide if i should work with firebase API or regular HTTP calls
 export const db = getFirestore(app);
+
+// useEffect(() => {
+//   const fetchData = async () => {
+//     // const userCollectionRef = collection(db, 'users', );
+//     const testColl = collection(db, 'users', 'iA3lzoHQ5jcAqy5CKlHEmWuXkKz1', 'test');
+//     // console.log('user collection', userCollectionRef);
+//     console.log('testCol', testColl);
+
+//     const bla = await getDocs(testColl);
+//     console.log('bla', bla);
+
+//     const docs = doc(db, 'users', 'iA3lzoHQ5jcAqy5CKlHEmWuXkKz1', 'test', 'q8LndPAGUx77LBWSR9LP');
+
+//     console.log('docs', docs);
+
+//     const aaa = await getDoc(docs);
+
+//     console.log('aaaaaaa', aaa.data());
+
+//     // bla.forEach((bla) => {
+//     //   console.log('BLA IS FROM user ID TEST collection', bla.data());
+//     // });
+
+//     // const userDocs = await getDocs(userCollectionRef);
+
+//     // userDocs.forEach((doc) => {
+//     //   console.log('user collection doc in for each', doc.data());
+//     // });
+//     // const testCollectionRef = collection(userCollectionRef, 'test', '');
+
+//     // const testDoc = await getDocs(testCollectionRef);
+
+//     // testDoc.forEach((doc) => {
+//     //   console.log('THIS IS FETCHED TEST DOCUMENT', doc);
+//     // });
+//   };
+//   fetchData();
+// }, []);

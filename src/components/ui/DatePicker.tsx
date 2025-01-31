@@ -27,6 +27,7 @@ const DatePicker: React.FC<IDatePickerProps> = ({ label = '', errorMessage = '',
         showMonthDropdown
         dropdownMode="select"
         toggleCalendarOnIconClick
+        dateFormat="MMMM d, yyyy"
         {...rest}
       />
       {errorMessage && <p className="p3-medium text-red-500">{errorMessage}</p>}
