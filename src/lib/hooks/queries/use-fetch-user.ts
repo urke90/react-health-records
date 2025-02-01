@@ -1,5 +1,5 @@
 import { auth, db } from '@/db';
-import { EQueryKeys } from '@/lib/constants';
+import { EFirestoreCollections, EQueryKeys } from '@/lib/constants';
 import type { IUserProfileSchemaDTO } from '@/lib/validation';
 import { errorMessageGenerator } from '@/utils/error-handling';
 import { useQuery } from '@tanstack/react-query';
@@ -14,7 +14,7 @@ export const useFetchUser = () => {
     queryKey: [EQueryKeys.USER, userId],
     queryFn: async () => {
       try {
-        const userDocRef = doc(db, 'users', userId);
+        const userDocRef = doc(db, EFirestoreCollections.USERS, userId);
         const userDocSnap = await getDoc(userDocRef);
 
         if (!userDocSnap.exists()) {

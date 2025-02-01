@@ -1,5 +1,5 @@
 import { auth, db } from '@/db';
-import { EQueryKeys } from '@/lib/constants';
+import { EFirestoreCollections, EQueryKeys } from '@/lib/constants';
 import { IUserProfileSchema } from '@/lib/validation';
 import { errorMessageGenerator } from '@/utils/error-handling';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -18,7 +18,7 @@ export const useUpdateUser = () => {
   return useMutation({
     mutationFn: async ({ data }: IMutationFnArgs) => {
       try {
-        const userDocRef = doc(db, 'users', userId);
+        const userDocRef = doc(db, EFirestoreCollections.USERS, userId);
 
         await updateDoc(userDocRef, {
           ...data,

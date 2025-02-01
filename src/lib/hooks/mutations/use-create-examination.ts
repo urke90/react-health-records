@@ -1,4 +1,5 @@
 import { auth, db } from '@/db';
+import { EFirestoreCollections } from '@/lib/constants';
 import type { IBaseMedicalExaminationSchema } from '@/lib/validation';
 import { errorMessageGenerator } from '@/utils/error-handling';
 import { useMutation } from '@tanstack/react-query';
@@ -12,14 +13,22 @@ export const useCreateMedicalExamination = () => {
   return useMutation({
     mutationFn: async (data: IBaseMedicalExaminationSchema) => {
       try {
-        const docRef = await addDoc(collection(db, 'users', userId, 'medicalExamination'), {
-          ...data,
-          followUpExamination: null,
-          prescription: '',
-          medicines: '',
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp(),
-        });
+        const docRef = await addDoc(
+          collection(
+            db,
+            EFirestoreCollections.USERS,
+            userId,
+            EFirestoreCollections.MEDICAL_EXAMINATIONS
+          ),
+          {
+            ...data,
+            followUpExamination: null,
+            prescription: '',
+            medicines: '',
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+          }
+        );
 
         console.log('docRef CREATE MEDICAL EXAMINATION', docRef);
       } catch (error) {
