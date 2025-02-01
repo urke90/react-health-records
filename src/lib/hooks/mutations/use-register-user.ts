@@ -1,4 +1,5 @@
 import { auth, db } from '@/db';
+import { EFirestoreCollections } from '@/lib/constants';
 import { errorMessageGenerator } from '@/utils/error-handling';
 import { useMutation } from '@tanstack/react-query';
 import { FirebaseError } from 'firebase/app';
@@ -19,7 +20,7 @@ export const useRegisterUser = () => {
       try {
         const response = await createUserWithEmailAndPassword(auth, email, password);
 
-        const userDocRef = doc(db, 'users', response.user.uid);
+        const userDocRef = doc(db, EFirestoreCollections.USERS, response.user.uid);
 
         await setDoc(userDocRef, {
           id: response.user.uid,

@@ -25,3 +25,8 @@ export const NAVIGATION_OPTIONS = [
 export enum EQueryKeys {
   USER = 'user',
 }
+
+export enum EFirestoreCollections {
+  USERS = 'users',
+  MEDICAL_EXAMINATIONS = 'medical_examinations',
+}
