@@ -87,7 +87,7 @@ const ProfileEdit = () => {
   }
 
   return (
-    <section className="flex flex-col gap-2 sm:gap-4 flex-1 m-auto max-sm:w-[min(460px,100%)]">
+    <section className="flex flex-col p-3 gap-2 sm:gap-4 flex-1 m-auto max-sm:w-[min(460px,100%)]">
       <h2 className="h2-bold">Your Health Card</h2>
       <form className="md:flex gap-6 lg:gap-10" onSubmit={handleSubmit(onSubmit)}>
         <div className="w-[min(400px,100%)]">

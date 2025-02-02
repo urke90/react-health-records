@@ -11,7 +11,7 @@ import Button from '../ui/Button';
 const Sidebar: React.FC = () => {
   return (
     <div className="bg-cyan-500 w-[max(240px)] h-[calc(100vh-80px)] sticky left-0 top-[80px] p-5 text-white flex flex-col gap-5">
-      <div className="flex gap-1">
+      <div className="flex gap-1 mt-2">
         <DashboardIcon width={30} />
         <h2 className="h2-bold">Health Records</h2>
       </div>

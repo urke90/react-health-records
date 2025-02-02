@@ -5,7 +5,14 @@ import Router from './router/Router';
 
 // ----------------------------------------------------------------
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+    },
+  },
+});
 
 const App = () => {
   return (
