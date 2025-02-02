@@ -8,7 +8,7 @@ import { useState } from 'react';
 const CreateRecord: React.FC = () => {
   const [chosenRecord, setChosenRecord] = useState<ERecordType>();
   return (
-    <div className="p-5">
+    <div className="p-3">
       <h2 className="h2-bold mb-4">New Record</h2>
       <div className="flex flex-col gap-4 md:flex-row">
         {!chosenRecord ? (
